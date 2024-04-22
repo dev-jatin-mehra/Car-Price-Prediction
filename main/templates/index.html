@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <title>Card</title>
+</head>
+
+<body class="top">
+    <div class="card">
+        <div class="card-header" style="background-color: rgb(219, 219, 219);height: 12%;display: flex;flex-direction: column;align-items: center;justify-content: center;
+            border-top-left-radius: 10px;border-top-right-radius: 10px;">
+            <p>Car price predictor</p>
+        </div>
+        <div class="card-body" style="margin-top: 10px;">
+            <form method="post" accept-charset="utf-8">
+                <div class="user-data" style="text-align: center">
+                    <label for="company"><b>Company:</b></label>
+                    <select class="enter" id="company" name="company" required="required" style="height: 3rem;" onchange="load_car_model(this.id , 'car_model')">
+
+                        <option value="" disabled selected>Select a Company</option>
+                        {% for company in Companies %}
+                        <option value="{{ company }}">{{ company }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="user-data" style="text-align: center;margin-top: 5px;">
+                    <label for="car_model"><b>Model:</b></label>
+                    <select class="enter" id="car_model" name="car_model" required="required" style="height: 3rem;">
+                        <option value="" disabled selected>Select a model</option>
+                    </select>
+                </div>
+                <div class="user-data" style="text-align: center;margin-top: 5px;">
+                    <label for="year"><b>Year:</b></label>
+                    <select class="enter" id="year" name="year" required="required" style="height: 3rem;">
+                        <option value="" disabled selected>Select Year</option>
+                        {% for year in Year %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="user-data" style="text-align: center;margin-top: 5px;">
+                    <label for="Fuel_Type"><b>Fuel_Type:</b></label>
+                    <select class="enter" id="Fuel_Type" name="Fuel_Type" required="required" style="height: 3rem;">
+                        <option value="" disabled selected>Select a Fuel_Type</option>
+                        {% for Fuel_Type in FuelType%}
+                            <option value="{{ Fuel_Type }}">{{ Fuel_Type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="predict" style="margin-top: 10px; display: flex;justify-content: center;">
+                    <div class="kilo-ms" style="margin-left: 20px;flex: 0 0 65%;margin-right:5px;">
+                        <label for="kilo_driven"><b>Enter Number of Kilometres Traveled:</b></label>
+                        <input class="box" type="text" id="kilo_driven" name="kilo_driven"
+                            placeholder="Enter number of kms traveled" style="height: 3.5rem; width: 80%;border-radius:
+                             5px;padding-left: 0.8rem;margin-top: 10px;">
+                    </div>
+                    <div class="button" style="margin-left: auto;flex: 0 0 35%;margin-right: 10px;">
+                        <button class="btn btn-primary butn" style="background-color: rgb(220, 220, 220); border-radius: 5px; width: 83.33333333%;height: 70px;
+                        margin-top: 10px;margin-bottom: 10px;" id="butn" onclick="send_data()">Predict Price</button>
+                    </div>
+                </div>
+
+            </form>
+        <br>
+        <div class="card-footer">
+            <div class="response" style="text-align: center;">
+                <h3><span id="prediction"></span></h3>
+            </div>
+        </div>
+
+        </div>
+        <div class="footer">
+
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("butn").addEventListener("click", function () {
+        var butn = document.getElementById("butn");
+        var originalColor = getComputedStyle(butn).backgroundColor;
+        butn.style.backgroundColor = "gray";
+        setTimeout(() => {
+            butn.style.transition = "background-color 0.5s";
+            butn.style.backgroundColor = originalColor;
+        }, 1000);
+    });
+</script>
+
+<script>
+    function load_car_model(company_id, car_model_id) {
+        var company = document.getElementById(company_id);
+        var car_model = document.getElementById(car_model_id);
+        
+        // Clear existing options
+        car_model.value = "";
+        car_model.innerHTML = "";
+
+        {% for company in Companies %}
+        if (company.value === "{{ company }}") {
+            {% for model in Car_Model %}
+                {% if company in model %}
+                    var newoption = document.createElement("option");
+                    newoption.value = "{{ model }}";
+                    newoption.innerHTML = "{{ model }}";
+                    car_model.options.add(newoption);
+                {% endif %}
+            {% endfor %}
+        }
+    {% endfor %}
+    }
+</script>
+
+<script>
+
+    function form_handler(event){
+        event.preventDefault();
+    }
+    function send_data(){
+        document.querySelector('form').addEventListener('submit',form_handler)
+
+        //Oening a XML request
+        var fd = new FormData(document.querySelector('form'));
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/predict',true);
+
+        document.getElementById("prediction").innerHTML = "Wait ! Predicting..";
+
+        //receiving that request
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == XMLHttpRequest.DONE){
+                document.getElementById("prediction").innerHTML = "Prediction: " + xhr.responseText ;//catching the
+                //response
+            }
+
+        }
+
+        xhr.onload = function(){};
+
+        xhr.send(fd);
+
+    }
+</script>
+
+
+
+</html>
