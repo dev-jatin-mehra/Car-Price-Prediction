@@ -23,7 +23,7 @@ This is a car price predictor application built using machine learning technique
 2. Navigate to the project directory:
 
     ```cmd
-    cd car-price-predictor
+    cd Car-Price-Prediction
     ```
 
 3. Install the required dependencies:
