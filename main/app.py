@@ -21,15 +21,24 @@ def index():
 def predict():
     company = request.form.get('company')
     car_model = request.form.get('car_model')
-    year = int(request.form.get('year'))
+    year = request.form.get('year')
     fuel_type = request.form.get('Fuel_Type')
-    kms_driven = int(request.form.get('kilo_driven'))
+    kms_driven = request.form.get('kilo_driven')
 
-    prediction = model.predict(pd.DataFrame([[car_model,company,year,kms_driven,fuel_type]],columns=['name','company',
-    'year','kms_driven','fuel_type']))
-    print(prediction[0])
+    # Check if any of the fields are empty
+    if not all([company, car_model, year, fuel_type, kms_driven]):
+        return "Please fill in all the fields."
+
+    # Check if year and kms_driven are integers
+    try:
+        year = int(year)
+        kms_driven = int(kms_driven)
+    except ValueError:
+        return "Year and kilometers driven must be integers."
+
+    prediction = model.predict(pd.DataFrame([[car_model, company, year, kms_driven, fuel_type]],
+                                            columns=['name', 'company', 'year', 'kms_driven', 'fuel_type']))
     return str(prediction[0])
-
 
 if __name__=="__main__":
     app.run(debug=True)
