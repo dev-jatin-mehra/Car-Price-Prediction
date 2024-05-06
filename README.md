@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a car price predictor application built using machine learning techniques. It predicts the price of a car based on various features such as brand, model, year, kms_driven and fuel_type.
+This is a car price predictor application built using machine learning techniques. It predicts the price of a car based on various features such as brand, model, year, kms_driven and fuel_type(not deployed)
 
 ## Files
 
