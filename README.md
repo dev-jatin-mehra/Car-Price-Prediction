@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a car price predictor application built using machine learning techniques. It predicts the price of a car based on various features such as brand, model, year, kms_driven and fuel_type.
+This is a car price predictor application built using machine learning techniques. It predicts the price of a car based on various features such as brand, model, year, kms_driven and fuel_type(not deployed)
 
 ## Files
 
@@ -23,7 +23,7 @@ This is a car price predictor application built using machine learning technique
 2. Navigate to the project directory:
 
     ```cmd
-    cd car-price-predictor
+    cd Car-Price-Prediction
     ```
 
 3. Install the required dependencies:
